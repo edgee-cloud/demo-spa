@@ -30,12 +30,16 @@ const router = createBrowserRouter([
       }
     ]
   }
-]);
+], {
+  basename: import.meta.env.DEV ? '/' : undefined,
+  future: {
+    v7_relativeSplatPath: true,
+  }
+});
 
 function App() {
   return <RouterProvider router={router} future={{
     v7_startTransition: true,
-    v7_relativeSplatPath: true,
   }} />;
 }
 

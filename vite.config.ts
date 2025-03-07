@@ -11,5 +11,10 @@ export default defineConfig({
       '127.0.0.1',
       'demo.edgee.dev',
     ],
+    hmr: {
+      host: 'localhost',
+      protocol: 'ws',
+      clientPort: 8080,
+    },
   },
 })
