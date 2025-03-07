@@ -73,23 +73,25 @@ export const AnalyticsWithJS = () => {
       : 'd213dd88c706c35abdee8e58350557df';
 
     window.amplitude = window.amplitude || { _q: [], _iq: {} };
-    if (window.amplitude.invoked) {
-      console.error("Amplitude snippet has been loaded.");
-    } else {
+    if (!window.amplitude.invoked) {
       window.amplitude.invoked = true;
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.integrity = 'sha384-BHj/6N+ZSiRDYRUHPEqr/nwkUsSk3s9r1ryQeFBc4x2OiVz4peW3jSccKZsoU8Ry';
-      script.crossOrigin = 'anonymous';
-      script.async = true;
-      script.src = 'https://cdn.amplitude.com/libs/analytics-browser-2.6.2-beta.0-min.js.gz';
-      script.onload = function() {
+      const amplitudeScript = document.createElement('script');
+      amplitudeScript.type = 'text/javascript';
+      amplitudeScript.integrity = 'sha384-BHj/6N+ZSiRDYRUHPEqr/nwkUsSk3s9r1ryQeFBc4x2OiVz4peW3jSccKZsoU8Ry';
+      amplitudeScript.crossOrigin = 'anonymous';
+      amplitudeScript.async = true;
+      amplitudeScript.src = 'https://cdn.amplitude.com/libs/analytics-browser-2.6.2-beta.0-min.js.gz';
+      amplitudeScript.onload = function() {
         if (!window.amplitude.runQueuedFunctions) {
           console.log("[Amplitude] Error: could not load SDK");
         }
       };
-      document.head.appendChild(script);
-      window.amplitude.init(amplitude_api_key);
+      document.head.appendChild(amplitudeScript);
+      amplitudeScript.onload = function() {
+        window.amplitude.init(amplitude_api_key, {
+          defaultTracking: true,
+        });
+      };
     }
 
     // Initialize Piano Analytics
